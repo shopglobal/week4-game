@@ -271,7 +271,7 @@ $(document).ready(function() {
     $('#attackBtn').on('click', function(e) {
     	// this ensure you cannot click any other characters again
     	if (!gameObj.yourFighter || !gameObj.currentEnemy) {
-    		$('#attackText').html('No enemy here, select an emeny to fight.')
+    		$('#attackText').html('No one is here, select a fighter to begin on the path to your destiny.')
     		return;
     	}
     	
