@@ -297,17 +297,23 @@ img {
 			You attacked <%= gameObj.currentEnemy ? gameObj.currentEnemy.name : gameObj.lastOpponent.name %> for <%= gameObj.yourCurrentAttackPower %> damage! <br>
 			<% if (gameObj.currentEnemy) { %>
 				<%= gameObj.currentEnemy.name %> counter attacked damaging your health by <%= gameObj.currentEnemy.counterAttackPower %>.  
-			<% } %>
+			<% } %> <br> <br> <br>
+			<!-- <p>text templates</p> -->
+
 		</div>
     </script>
     <script type="text/template" id="winTmpl">
 		<div class="attackText">
 			You have beaten <%= lastOpponent.name %> , choose another enemy to fight! 
+			<br> <br> <br>
+			<!-- <p>text templates</p> -->
 		</div>
     </script>
        <script type="text/template" id="lossTmpl">
 		<div class="attackText">
 			<%= gameObj.currentEnemy.name %>  has taken you down! Game Over!!
+			<br> <br> <br>
+			<!-- <p>text templates</p> -->
 		</div>
     </script>
     <script type="text/template" id="MatrixTmpl">
@@ -315,6 +321,8 @@ img {
             You have beaten <%= lastOpponent.name %>. You may be the one! 
             <br>
             ENTER THE MATRIX! 
+            <br> <br> <br>
+			<!-- <p>text templates</p> -->
         </div>
     </script>
 
