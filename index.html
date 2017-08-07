@@ -1,21 +1,403 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta charset="UTF-8">
-	<title>Matrix RPG Game</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" />
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
-    <link rel="stylesheet" type="text/css" href="css/reset.css" />
+	<title>Matrix RPG</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Matrix RPG Game, by Mark Allen Evans">
+    <meta name="author" content="Ali Zaidi">
+
+	<!-- add the jQuery Library -->
+  	<script src="assets/javascript/jquery-3.1.1.min.js"></script>
+
+    <!--Import Google Font-->
+    <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+    <link rel="stylesheet" type="text/css" href="assets/css/reset.css" />
+
     
 </head>
-<body>
+<body>     <canvas id="c" class="gamezone"></canvas>
+<style>
+/*p {
+	background-color: rgba(255, 255, 255, 0.5);
+}
+div {
+	background-color: rgba(255, 255, 255, 0.5);
+}
+* {
+	background-color: rgba(255, 255, 255, 0.5);
+}*/
+/** {
+	color: white;
+}*/
+div.gamezone {
+	color: white;
+}
+p.text-center {
+	color: black;
+}
+canvas {
+	position: absolute;
+	display: block;
+/*	background-color: rgba(255, 255, 255, 0.5);*/
+}
+
+/* Google Fonts to choose fron: 
+font-family: 'Press Start 2P', cursive;
+font-family: 'Share Tech Mono', monospace;
+font-family: 'VT323', monospace;*/
+
+
+body {
+	font-family: 'Share Tech Mono', monospace;
+	color: white;
+
+
+}
+/*@font-face {
+	font-family: "STJEDISE";
+	src: url(star_jedi/stjedise/STJEDISE.TTF);
+}
+h1 {
+	font-family: STJEDISE;
+}*/
+.modal-body {
+	color: black;
+}
+
+.modal-header {
+	color: black;
+}
+
+#wrap {
+    min-height: 100%;
+    height: auto !important;
+    height: 100%;
+    margin: 0 auto -60px;
+
+ }
+
+
+ #push, #footer {
+    height: 60px;
+}
+
+
+/*Classes available*/
+.center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+.characterContainer {
+	display: inline-block;
+	width: 200px;
+	border: solid 4px black;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	border-radius: 7px;
 	
+}
+
+.bg-red {
+	background-color: #ce2121;
+
+	
+}
+
+.bg-white {
+	background-color: white;
+
+}
+
+.bg-black {
+	background-color: grey;
+
+}
+
+.enemyContainer {
+	display: inline-block;
+	/*height: 200px;*/
+	width: 200px;
+	border: solid 4px black;
+	margin-bottom: 10px;
+	background-color: black;
+	border-radius: 7px;
+}
+
+
+.characterContainer p, .enemyContainer p {
+	color: black;
+	text-align: center;
+
+}
+
+img {
+	height: 200px;
+	width: 180px;
+	display: block;
+/*	margin: auto;*/
+    margin-left: auto;
+    margin-right: auto;
+
+}
+
+.attackBtn {
+	vertical-align: middle;
+	margin-top: 80px;
+	
+}
+
+#attackText {
+	font-size: 25px;
+}
+
+#fighterList {
+
+},
+
+#enemyList {
+
+},
+
+#yourCharacter {
+
+
+},
+
+#yourEnemy {
+
+},
+</style>
+  
+	<!-- Starting Modal -->
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title text-center">You've arrived! <strong>Neo</strong> says: </h4>
+                </div>
+                <div class="modal-body">
+                    <p class="text-center">"I know you're out there. I can feel you now. I know that you're afraid... you're afraid of us. You're afraid of change. I don't know the future. I didn't come here to tell you how this is going to end. I came here to tell you how it's going to begin. I'm going to hang up this phone, and then I'm going to show these people what you don't want them to see. I'm going to show them a world without you. A world without rules and controls, without borders or boundaries. A world where anything is possible. Where we go from there is a choice I leave to you."
+                </div>
+                 <div class="modal-footer">
+    <!--     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button> -->
+        			<button type="button" class="btn btn-primary block-center" data-dismiss="modal">Enter the Matrix!</button>
+      			</div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+
+<div  id='wrap' class="gamezone">
+    <!-- Title Header -->
+    <header>       
+        <div class="container-fluid" id="gamezone">
+
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                    <h1> MATRIX RPG GAME!</h1></br>
+                </div>
+            </div>
+        </div>
+    </header>
+   
+   <!-- Battle Zone Area -->
+    <div class="container-fluid gameplaySection">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                <!-- Select your champion header -->
+                <h4> Select Your Matrix Fighter</h4>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div id="fighterList">
+                       <!--  <p> Neo </p>
+                        This is the row where the characters live -->
+                </div>
+            </div>
+        </div>
+            <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                <!-- Select your enemy aligned right header -->
+                <h4> Enemies To Attack</h4>
+                <div class="col-sm-12 col-md-12 col-lg-12">
+                    <div id="enemyList">
+                        <!-- This is where your enemies live -->
+                        <p> Enemy list</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+            <div class="row">
+                <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                    <h2> Battle Zone </h2>
+                </div>
+            </div>
+            <div class="row">
+                <!-- This is the Battle Zone -->
+                <div class="col-sm-12 col-md-4 col-lg-4 text-center">
+                    <h2> Your Fighter!</h2>
+                    <div class="col-sm-12 col-md-12 col-lg-12 ">
+                    <!-- For character choice  -->
+                    	<div id="yourFighter">
+
+                    <!-- This is where your character lives -->
+                		</div>
+                	</div>
+                </div>
+                <div class="col-sm-12 col-md-4 col-lg-4 text-center">
+                   <!-- This is the attack button -->
+                    <button class="waves-effect waves-light btn-danger btn-lg attackBtn text-center" id="attackBtn"> Attack! </button>
+                 
+                </div>
+                <div class="col-sm-12 col-md-4 col-md-4 text-center"> 
+                	<h2> Your Enemy</h2>
+                	<div class="col-sm-12 col-md-12 col-lg-12 ">
+                		 <!-- This is where your enemy lives -->
+                		<div id="yourEnemy">
+                    	</div>
+                    </div>
+                </div>
+            </div>
+            <!-- in-game text -->
+            <div class="row">
+            <div class="col-sm-12 col-md-2 col-lg-2"></div>
+                <div class="col-sm-12 col-md-8 col-lg-8 text-center">
+                                            <!-- more game text -->
+                        <div id="attackText"> </div>
+                        <!-- using this tag to create a button and use it to reset -->
+                        <br>
+                        <div id="gameOver">
+                      <!-- <button> </button>   -->    
+                        </div>
+                </div>
+                 <div class="col-sm-12 col-md-2 col-lg-2"></div>
+            </div>
+    </div>
+
+	<div id="push"> </div>
+</div>
+<div id="footer">
+</div>
+    <script type="text/template" id="characterTmpl">
+		<div class="characterContainer characterClick <%= background %>" data-character-index="<%= index %>">
+			<p><%= character.name %></p>
+			<img src="<%= character.visual %>">
+			<p>HP: <%= character.healthPoints %></p>
+		</div>
+    </script>
+        <script type="text/template" id="attackTmpl">
+		<div class="attackText">
+			You attacked <%= gameObj.currentEnemy ? gameObj.currentEnemy.name : gameObj.lastOpponent.name %> for <%= gameObj.yourCurrentAttackPower %> damage! <br>
+			<% if (gameObj.currentEnemy) { %>
+				<%= gameObj.currentEnemy.name %> counter attacked damaging your health by <%= gameObj.currentEnemy.counterAttackPower %>.  
+			<% } %>
+		</div>
+    </script>
+    <script type="text/template" id="winTmpl">
+		<div class="attackText">
+			You have beaten <%= lastOpponent.name %> , choose another enemy to fight! 
+		</div>
+    </script>
+       <script type="text/template" id="lossTmpl">
+		<div class="attackText">
+			<%= gameObj.currentEnemy.name %>  has taken you down! Game Over!!
+		</div>
+    </script>
+    <script type="text/template" id="MatrixTmpl">
+        <div class="attackText">
+            You have beaten <%= lastOpponent.name %>. You may be the one! 
+            <br>
+            ENTER THE MATRIX! 
+        </div>
+    </script>
 
 
 
+   
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+		<script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+        </script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+        <!-- Include all compiled plugins (below), or include individual files as needed -->
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script type="text/javascript" src="assets/javascript/game.js"></script>
+        <!-- Created a background with scrolling images -->
+<!--         <script type="text/javascript">
+        $(document).ready(function() {
+            $.backstretch(['assets/video/matrix.mp4', 'assets/images/bg-ship4.jpg', 'assets/images/darth4.jpg','assets/images/plane1.jpg', 'assets/images/plane2.jpg'], {
+                duration: 10000,
+                fade: 900
+            });
+        });
+        </script> -->
+
+        <script type="text/javascript"> 
+        var c = document.getElementById("c");
+var ctx = c.getContext("2d");
+
+//making the canvas full screen
+c.height = window.innerHeight;
+c.width = window.innerWidth;
+
+//chinese characters - taken from the unicode charset
+var chinese = "田由甲申甴电甶男甸甹町画甼甽甾甿畀畁畂畃畄畅畆畇畈畉畊畋界畍畎畏畐畑";
+//converting the string into an array of single characters
+chinese = chinese.split("");
+
+var font_size = 10;
+var columns = c.width/font_size; //number of columns for the rain
+//an array of drops - one per column
+var drops = [];
+//x below is the x coordinate
+//1 = y co-ordinate of the drop(same for every drop initially)
+for(var x = 0; x < columns; x++)
+	drops[x] = 1; 
+
+//drawing the characters
+function draw()
+{
+	//Black BG for the canvas
+	//translucent BG to show trail
+	ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+	ctx.fillRect(0, 0, c.width, c.height);
+	
+	ctx.fillStyle = "#0F0"; //green text
+	ctx.font = font_size + "px arial";
+	//looping over drops
+	for(var i = 0; i < drops.length; i++)
+	{
+		//a random chinese character to print
+		var text = chinese[Math.floor(Math.random()*chinese.length)];
+		//x = i*font_size, y = value of drops[i]*font_size
+		ctx.fillText(text, i*font_size, drops[i]*font_size);
+		
+		//sending the drop back to the top randomly after it has crossed the screen
+		//adding a randomness to the reset to make the drops scattered on the Y axis
+		if(drops[i]*font_size > c.height && Math.random() > 0.975)
+			drops[i] = 0;
+		
+		//incrementing Y coordinate
+		drops[i]++;
+	}
+}
+
+setInterval(draw, 33);
 
 
-	<script type="text/javascript" src="javascript/game.js"></script>
 
+</script>
 </body>
+
 </html>
+
